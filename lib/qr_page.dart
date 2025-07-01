@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_binder/qr_code.dart';
+import 'package:qr_binder/qr_scanner.dart';
 
 class GenerateQRCode extends StatefulWidget {
   const GenerateQRCode({super.key});
@@ -18,7 +19,8 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
         title: const Text("QR Binder"),
         titleTextStyle: const TextStyle(
           color: Colors.white,
-          fontSize: 30,),
+          fontSize: 30,
+        ),
         titleSpacing: 1.0,
         centerTitle: true,
         toolbarHeight: 60.2,
@@ -34,7 +36,7 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: <Widget>[
           Container(
             margin: const EdgeInsets.all(70),
             child: TextField(
@@ -56,6 +58,23 @@ class GenerateQRCodeState extends State<GenerateQRCode> {
                 );
               },
               child: const Text('GENERATE QR CODE')),
+          const SizedBox(height: 16), // Adds vertical space
+          ElevatedButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const QRScannerScreen(),
+                ),
+              );
+              if (result != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Scanned: $result')),
+                );
+              }
+            },
+            child: const Text('SCAN QR CODE'),
+          ),
         ],
       ),
     );
